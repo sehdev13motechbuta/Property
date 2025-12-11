@@ -65,8 +65,8 @@ html, body { scroll-behavior: smooth; }
 
 /* Gallery Animation */
 @keyframes slide-ltr {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
 .slide-gallery { animation: slide-ltr 20s linear infinite; }
 
@@ -474,3 +474,4 @@ document.getElementById('whatsappBtn')?.addEventListener('click', function(){
 
 </body>
 </html>
+
