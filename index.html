@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UrbanNest Realty — Buy, Sell & Rent Properties</title>
+
+<!-- Animate CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" />
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Bootstrap for Modal -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+/* GLOBAL */
+html, body { scroll-behavior: smooth; }
+
+/* Glass Card */
+.glass-card {
+  backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  transition: 0.35s ease;
+}
+.glass-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 30px rgba(0,0,0,0.5);
+}
+
+/* Gradient CTA Button */
+.cta-btn {
+  background: linear-gradient(135deg,#00eaff,#007bff);
+  box-shadow: 0 4px 18px rgba(0,122,255,0.18);
+  transition: 0.25s;
+}
+.cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,122,255,0.28);
+}
+
+/* Secondary button */
+.ghost-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Hero Slider */
+@keyframes heroSlide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.hero-slider {
+  width: 200%; height: 100%; display: flex;
+  animation: heroSlide 22s linear infinite;
+}
+.hero-slider img { width: 50%; height: 100%; object-fit: cover; }
+
+/* Gallery Animation */
+@keyframes slide-ltr {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.slide-gallery { animation: slide-ltr 20s linear infinite; }
+
+/* Fade-in Animation */
+.fade-section { opacity: 0; transform: translateY(24px); transition: 1s ease; }
+.fade-section.visible { opacity: 1; transform: translateY(0); }
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.25rem; }
+  .hero-sub { font-size: 1rem; }
+}
+</style>
+</head>
+
+<body class="bg-gray-950 text-white overflow-x-hidden">
+
+<!-- HEADER -->
+<header class="fixed w-full top-0 z-50 bg-gray-900/60 backdrop-blur-xl shadow-lg">
+  <div class="max-w-7xl mx-auto flex items-center justify-between p-5">
+
+    <!-- LOGO -->
+    <a href="#" class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-black font-bold">UN</div>
+      <div>
+        <div class="text-lg md:text-2xl font-extrabold text-cyan-300">UrbanNest</div>
+        <div class="text-xs text-gray-300 -mt-1">Realty</div>
+      </div>
+    </a>
+
+    <!-- DESKTOP MENU -->
+    <nav class="hidden md:flex gap-6 text-md items-center">
+      <a href="#About" class="hover:text-cyan-300 transition">About</a>
+      <a href="#services" class="hover:text-cyan-300 transition">Services</a>
+      <a href="#gallery" class="hover:text-cyan-300 transition">Listings</a>
+      <a href="#team" class="hover:text-cyan-300 transition">Agents</a>
+      <a href="#contact" class="hover:text-cyan-300 transition">Contact</a>
+
+      <button class="cta-btn px-5 py-2 rounded-lg text-black ml-4" data-bs-toggle="modal" data-bs-target="#listingsModal">
+        View Listings
+      </button>
+
+      <!-- LOGIN / SIGNUP -->
+      <button class="ghost-btn px-4 py-2 rounded-lg ml-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+        <i class="fa-solid fa-right-to-bracket mr-2"></i>Login
+      </button>
+      <button class="cta-btn px-4 py-2 rounded-lg ml-2 bg-green-500" data-bs-toggle="modal" data-bs-target="#signupModal">
+        <i class="fa-solid fa-user-plus mr-2"></i>Signup
+      </button>
+    </nav>
+
+    <!-- MOBILE MENU BUTTON -->
+    <button id="menu-btn" class="md:hidden text-3xl text-white">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- MOBILE DROPDOWN MENU -->
+  <div id="mobile-menu" class="hidden md:hidden flex flex-col bg-gray-900/95 shadow-2xl px-6 py-6 space-y-4 text-lg animate__animated animate__fadeInDown">
+    <a href="#About" class="hover:text-cyan-300 transition">About</a>
+    <a href="#services" class="hover:text-cyan-300 transition">Services</a>
+    <a href="#gallery" class="hover:text-cyan-300 transition">Listings</a>
+    <a href="#team" class="hover:text-cyan-300 transition">Agents</a>
+    <a href="#contact" class="hover:text-cyan-300 transition">Contact</a>
+
+    <button class="cta-btn w-full py-2 rounded-lg" data-bs-toggle="modal" data-bs-target="#listingsModal">View Listings</button>
+    <button class="ghost-btn w-full py-2 rounded-lg mt-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    <button class="cta-btn w-full py-2 rounded-lg mt-2 bg-green-500" data-bs-toggle="modal" data-bs-target="#signupModal">Signup</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 hero-slider">
+    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=2000&q=80" alt="city apartment" />
+    <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=2000&q=80" alt="luxury home" />
+  </div>
+
+  <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-gray-900/70"></div>
+
+  <div class="text-center z-10 px-6">
+    <h1 class="hero-title text-5xl md:text-6xl font-extrabold text-cyan-300 mb-4">Find Your Next Home with UrbanNest</h1>
+    <p class="hero-sub text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Buy, sell or rent premium properties — discover curated listings, expert agents and seamless transactions.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#gallery" class="cta-btn px-6 py-3 rounded-lg text-black">Browse Listings</a>
+      <a href="#contact" class="ghost-btn px-6 py-3 rounded-lg">Contact an Agent</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="About" class="py-20 fade-section max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl text-center mb-6 font-bold text-cyan-300">About UrbanNest</h2>
+  <p class="glass-card p-6 text-lg leading-relaxed text-gray-200 text-center">
+    UrbanNest Realty is a full-service real estate agency specializing in residential and commercial properties.
+    With a network of experienced agents and a curated portfolio, we make property buying, selling and renting smooth,
+    transparent and tailored to your needs.
+  </p>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="py-16 fade-section max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl text-center text-cyan-300 font-bold mb-8">Our Services</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="glass-card p-6 text-center">
+      <i class="fa-solid fa-house-chimney text-cyan-300 text-3xl mb-3"></i>
+      <h3 class="text-xl font-bold mb-2">Buy Property</h3>
+      <p class="text-gray-300">Search verified properties, schedule visits, and close confidently.</p>
+    </div>
+
+    <div class="glass-card p-6 text-center">
+      <i class="fa-solid fa-signs-post text-pink-300 text-3xl mb-3"></i>
+      <h3 class="text-xl font-bold mb-2">Sell Property</h3>
+      <p class="text-gray-300">Professional valuation, listing optimization and buyer matching.</p>
+    </div>
+
+    <div class="glass-card p-6 text-center">
+      <i class="fa-solid fa-key text-purple-300 text-3xl mb-3"></i>
+      <h3 class="text-xl font-bold mb-2">Rent & Lease</h3>
+      <p class="text-gray-300">Find long-term tenants or short-term rentals with secure agreements.</p>
+    </div>
+
+    <div class="glass-card p-6 text-center">
+      <i class="fa-solid fa-scale-balanced text-yellow-300 text-3xl mb-3"></i>
+      <h3 class="text-xl font-bold mb-2">Valuation & Advisory</h3>
+      <p class="text-gray-300">Data-driven valuations, market analysis and investment advice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LISTINGS (Gallery) -->
+<section id="gallery" class="py-20 fade-section px-4 overflow-hidden">
+  <h2 class="text-3xl text-center text-cyan-300 font-bold mb-8">Featured Listings</h2>
+  <div class="flex gap-6 whitespace-nowrap slide-gallery px-4">
+    <div class="inline-block w-80">
+      <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80" class="w-full h-56 object-cover rounded-xl shadow-lg mb-3" />
+      <h4 class="font-bold">Modern 2BHK Apartment</h4>
+      <p class="text-sm text-gray-300">Downtown • 2 bed • 2 bath • 1200 sqft • $1200/mo</p>
+    </div>
+
+    <div class="inline-block w-80">
+      <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=900&q=80" class="w-full h-56 object-cover rounded-xl shadow-lg mb-3" />
+      <h4 class="font-bold">Luxury Villa</h4>
+      <p class="text-sm text-gray-300">Uptown • 4 bed • 4 bath • 3500 sqft • $1,200,000</p>
+    </div>
+
+    <div class="inline-block w-80">
+      <img src="https://images.unsplash.com/photo-1598928506312-2091b7e0d2b6?auto=format&fit=crop&w=900&q=80" class="w-full h-56 object-cover rounded-xl shadow-lg mb-3" />
+      <h4 class="font-bold">Cozy Studio</h4>
+      <p class="text-sm text-gray-300">Midtown • Studio • 1 bath • 420 sqft • $450/mo</p>
+    </div>
+
+    <div class="inline-block w-80">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" class="w-full h-56 object-cover rounded-xl shadow-lg mb-3" />
+      <h4 class="font-bold">Commercial Office Space</h4>
+      <p class="text-sm text-gray-300">Business District • 2200 sqft • $3,000/mo</p>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="team" class="py-20 fade-section max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl text-center text-cyan-300 font-bold mb-8">Meet Our Agents</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="glass-card p-6 text-center">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-24 h-24 mx-auto rounded-full border-cyan-300 border-2 mb-3">
+      <h3 class="text-lg font-bold text-cyan-200">Amit Sharma</h3>
+      <p class="text-gray-300 text-sm">Senior Sales Agent</p>
+      <p class="mt-3 text-sm text-gray-400">Expert in residential sales and investor deals.</p>
+    </div>
+
+    <div class="glass-card p-6 text-center">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-24 h-24 mx-auto rounded-full border-pink-300 border-2 mb-3">
+      <h3 class="text-lg font-bold text-pink-200">Neha Gupta</h3>
+      <p class="text-gray-300 text-sm">Leasing Specialist</p>
+      <p class="mt-3 text-sm text-gray-400">Focused on rentals and tenant relationships.</p>
+    </div>
+
+    <div class="glass-card p-6 text-center">
+      <img src="https://randomuser.me/api/portraits/men/55.jpg" class="w-24 h-24 mx-auto rounded-full border-purple-300 border-2 mb-3">
+      <h3 class="text-lg font-bold text-purple-200">Rohit Kumar</h3>
+      <p class="text-gray-300 text-sm">Commercial Lead</p>
+      <p class="mt-3 text-sm text-gray-400">Handles commercial listings and corporate clients.</p>
+    </div>
+
+    <div class="glass-card p-6 text-center">
+      <img src="https://randomuser.me/api/portraits/women/65.jpg" class="w-24 h-24 mx-auto rounded-full border-cyan-300 border-2 mb-3">
+      <h3 class="text-lg font-bold text-cyan-200">Priya Verma</h3>
+      <p class="text-gray-300 text-sm">Client Relations</p>
+      <p class="mt-3 text-sm text-gray-400">Coordinates viewings and customer support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-20 fade-section max-w-6xl mx-auto px-4">
+  <h2 class="text-3xl text-center text-cyan-300 font-bold mb-8">Contact & Enquiry</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+    <!-- CONTACT FORM -->
+    <div class="glass-card p-8 rounded-2xl space-y-6 shadow-xl">
+      <h3 class="text-2xl font-bold text-cyan-200">Request a Viewing / Ask a Question</h3>
+      <form id="leadForm" class="space-y-4">
+        <input type="text" id="name" placeholder="Full name" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+        <input type="email" id="email" placeholder="Email address" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+        <input type="tel" id="phone" placeholder="Phone number" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+        <select id="interest" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700">
+          <option value="buy">Buying</option>
+          <option value="rent">Renting</option>
+          <option value="sell">Selling</option>
+          <option value="valuation">Valuation</option>
+        </select>
+        <textarea id="message" rows="4" placeholder="Your message / preferred timings" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700"></textarea>
+
+        <div class="flex gap-3">
+          <button type="submit" class="cta-btn px-5 py-2 rounded-lg text-black">Send Enquiry</button>
+          <button type="button" id="whatsappBtn" class="ghost-btn px-5 py-2 rounded-lg flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-400"></i> WhatsApp</button>
+        </div>
+      </form>
+
+      <!-- QR CODE -->
+      <div class="flex justify-center mt-4">
+        <div class="p-3 rounded-2xl border-2 border-cyan-300 shadow-xl">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://urbannest.example.com/listings" class="w-52 h-52 rounded-md" alt="QR - UrbanNest Listings">
+        </div>
+      </div>
+      <p class="text-center text-gray-400 text-sm mt-2">Scan to view our full listings</p>
+    </div>
+
+    <!-- MAP / CONTACT INFO -->
+    <div class="glass-card p-6 rounded-2xl">
+      <h3 class="text-2xl font-bold text-cyan-200 mb-4">Visit Our Office</h3>
+      <p class="text-gray-300 mb-4">UrbanNest Realty, 2nd Floor, Skyline Tower, MG Road, New Delhi, India</p>
+      <p class="text-gray-300 mb-4"><strong>Phone:</strong> +91 98765 43210</p>
+      <p class="text-gray-300 mb-6"><strong>Email:</strong> hello@urbannest.example.com</p>
+
+      <div class="w-full h-64 rounded-xl overflow-hidden border border-cyan-300">
+        <iframe src="https://maps.google.com/maps?q=New%20Delhi&t=&z=13&ie=UTF8&iwloc=&output=embed" class="w-full h-full"></iframe>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LISTINGS MODAL -->
+<div class="modal fade" id="listingsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-gray-900 rounded-2xl p-6 glass-card">
+      <div class="modal-header border-0">
+        <h2 class="text-2xl text-cyan-200 font-bold mx-auto">Property Listings</h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="glass-card p-4 flex gap-4">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80" class="w-36 h-28 object-cover rounded-md" />
+            <div>
+              <h4 class="font-bold text-cyan-200">Modern 2BHK Apartment</h4>
+              <p class="text-sm text-gray-300">Downtown • 2 bed • 2 bath • 1200 sqft</p>
+              <p class="mt-2 font-bold text-lg">$120,000</p>
+              <div class="mt-3 flex gap-2 text-xs text-gray-400">
+                <span class="px-2 py-1 rounded bg-gray-800">Parking</span>
+                <span class="px-2 py-1 rounded bg-gray-800">Gym</span>
+                <span class="px-2 py-1 rounded bg-gray-800">Pool</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 flex gap-4">
+            <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=900&q=80" class="w-36 h-28 object-cover rounded-md" />
+            <div>
+              <h4 class="font-bold text-cyan-200">Luxury Villa</h4>
+              <p class="text-sm text-gray-300">Uptown • 4 bed • 4 bath • 3500 sqft</p>
+              <p class="mt-2 font-bold text-lg">$1,200,000</p>
+              <div class="mt-3 flex gap-2 text-xs text-gray-400">
+                <span class="px-2 py-1 rounded bg-gray-800">Garden</span>
+                <span class="px-2 py-1 rounded bg-gray-800">Garage</span>
+                <span class="px-2 py-1 rounded bg-gray-800">Security</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- add more items as needed -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- AUTH / ADMIN MODALS -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-gray-900 rounded-2xl p-6 glass-card">
+      <div class="modal-header border-0">
+        <h2 class="text-2xl text-cyan-200 font-bold mx-auto">Login</h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="loginForm" class="space-y-4">
+          <input type="email" placeholder="Email Address" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <input type="password" placeholder="Password" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <button type="submit" class="cta-btn w-full py-3 rounded-lg text-black">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-gray-900 rounded-2xl p-6 glass-card">
+      <div class="modal-header border-0">
+        <h2 class="text-2xl text-green-300 font-bold mx-auto">Signup</h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="signupForm" class="space-y-4">
+          <input type="text" placeholder="Full Name" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <input type="email" placeholder="Email Address" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <input type="password" placeholder="Create Password" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <button type="submit" class="cta-btn w-full py-3 rounded-lg text-black">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-gray-900 rounded-2xl p-6 glass-card">
+      <div class="modal-header border-0">
+        <h2 class="text-2xl text-cyan-200 font-bold mx-auto">Admin Login</h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="adminForm" class="space-y-4">
+          <input type="email" placeholder="Admin Email" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <input type="password" placeholder="Password" class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700" required />
+          <button type="submit" class="cta-btn w-full py-3 rounded-lg text-black">Admin Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-gray-900 py-10 mt-20 text-center text-gray-400 border-t border-gray-800">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex flex-col md:flex-row md:justify-between items-center gap-4">
+      <div class="text-left">
+        <h3 class="text-2xl font-bold text-cyan-300">UrbanNest Realty</h3>
+        <p class="text-sm text-gray-400">Buy • Sell • Rent • Invest</p>
+      </div>
+
+      <div class="flex gap-4 text-2xl">
+        <a href="#" class="hover:text-cyan-300"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="hover:text-cyan-300"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="hover:text-cyan-300"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <p class="text-gray-500 text-sm mt-6">© <span id="year"></span> UrbanNest Realty. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+document.getElementById("menu-btn").addEventListener("click", () => {
+  document.getElementById("mobile-menu").classList.toggle("hidden");
+});
+
+// Fade Sections
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+});
+document.querySelectorAll('.fade-section').forEach(sec=>observer.observe(sec));
+
+// Footer year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Lead form submit (demo: just prevent default and show a toast)
+document.getElementById('leadForm')?.addEventListener('submit', function(e){
+  e.preventDefault();
+  alert('Thanks! Your enquiry has been submitted. Our agent will contact you shortly.');
+  this.reset();
+});
+
+// WhatsApp quick action (open with prefilled message)
+document.getElementById('whatsappBtn')?.addEventListener('click', function(){
+  const phone = '+919876543210'; // your business WhatsApp number
+  const text = encodeURIComponent('Hi UrbanNest, I would like to enquire about listings. Please contact me.');
+  window.open(`https://wa.me/${phone.replace(/\D/g,'')}?text=${text}`, '_blank');
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
